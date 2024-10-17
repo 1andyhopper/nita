@@ -51,7 +51,7 @@ NITA ships with two example projects that we use to demonstrate its ability to a
 
 Below is a screenshot of the files and folders within one of the NITA project examples that has already been created. Here we are looking at the `ebgp_wan` project, along with a brief explanation of each file and folder. Familiarising yourself with the contents is essential, as we refer back to the contents throughout this guide.
 
-![Files and Folders Image](nita/docs/images/files_folders.PNG)
+![Files and Folders Image](docs/images/files_folders.PNG)
 
 ### Examples, Examples, Examples
 
@@ -170,7 +170,7 @@ The structure should look something similar to the below screenshot (_paying att
    - `tasks/`: Contains the main task files.
    - `templates/`: This is where the new Jinja2 template should be stored. 
 
- ![j2_location image](nita/docs/images/j2_location.PNG)
+ ![j2_location image](docs/images/j2_location.PNG)
 
 Once we have the `roles` directory structure in place, NITA will first check this designated `roles` location for any roles when executing a playbook. This initial search helps to ensure that the application is aware of all available templates and configurations defined.
 
@@ -292,7 +292,7 @@ Here’s how to approach this, open the workbook and either add or edit a sheet 
 
    For instance, the contents of your "`routing_options+`" spreadsheet might look something like this:
 
-  ![static spreadsheet image](nita/docs/images/static_route.PNG)
+  ![static spreadsheet image](docs/images/static_route.PNG)
 
 ## Handling Multiple Values
 
@@ -300,8 +300,8 @@ It is important to note that some column headers within the copied worksheet may
 
 This distinction is particularly useful when you need to define multiple neighbors or attributes that share a common category while maintaining their respective state. If you plan to parse similar data types in your configurations later, understanding this structure is essential for proper functionality and reliability.
 
-![Note + Image 1](nita/docs/images/note_+.PNG)
-![Note + Image 2](nita/docs/images/note_+2.PNG)
+![Note + Image 1](docs/images/note_+.PNG)
+![Note + Image 2](docs/images/note_+2.PNG)
 
 ----
 
@@ -312,7 +312,7 @@ We suggest to begin modifying the example workbook, start by adding `base` data 
 
 The `base` worksheet must contain the following three columns: `host`, `name`, and `value`. The layout should resemble the example shown below:
 
-![Base Data Spreadsheet Image](nita/docs/images/base.PNG)
+![Base Data Spreadsheet Image](docs/images/base.PNG)
 
 **Column Definitions**
 
@@ -343,7 +343,7 @@ Among the various attribute/value pairs you can define, the following are partic
 
 It is essential to ensure that these parameters are accurate and match the network environment, as they provide the ability for NITA to communicate with the devices.
 
-![Netconf User Spreadsheet Image](nita/docs/images/netconf_user.PNG)
+![Netconf User Spreadsheet Image](docs/images/netconf_user.PNG)
 
 
 ## Management Interface Data Worksheet
@@ -352,7 +352,7 @@ The next sheet in the workbook is dedicated to configuring the management interf
 
 The layout of the "`Management Interface`" data worksheet should appear similar to the example shown below:
 
-![Management Interface Spreadsheet Image](nita/docs/images/management_interface.PNG)
+![Management Interface Spreadsheet Image](docs/images/management_interface.PNG)
 
 **Column Definitions**
 
