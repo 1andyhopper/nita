@@ -51,7 +51,7 @@ NITA ships with two example projects that we use to demonstrate its ability to a
 
 Below is a screenshot of the files and folders within one of the NITA project examples that has already been created. Here we are looking at the `ebgp_wan` project, along with a brief explanation of each file and folder. Familiarising yourself with the contents is essential, as we refer back to the contents throughout this guide.
 
-![Files and Folders Image](docs/images/files_folders.PNG)
+![Files and Folders Image](images/files_folders.PNG)
 
 ### Examples, Examples, Examples
 
