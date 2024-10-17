@@ -170,7 +170,7 @@ The structure should look something similar to the below screenshot (_paying att
    - `tasks/`: Contains the main task files.
    - `templates/`: This is where the new Jinja2 template should be stored. 
 
- ![j2_location image](docs/images/j2_location.PNG)
+ ![j2_location image](/images/j2_location.PNG)
 
 Once we have the `roles` directory structure in place, NITA will first check this designated `roles` location for any roles when executing a playbook. This initial search helps to ensure that the application is aware of all available templates and configurations defined.
 
