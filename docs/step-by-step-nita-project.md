@@ -7,7 +7,7 @@
     - [Inventory File Location](#inventory-file-location)
 - [Configuration Requirements](#configuration-requirements)
     - [Static Route Configuration Example](#static-route-configuration-example)
-- [Automation Steps with NITA](#automation-steps-with-nita)
+- [Automating the Steps with NITA](#automating-the-steps-with-nita)
     - [Implementing the Roles Structure](#implementing-the-roles-structure)
     - [Structure and Example of a tasks yaml file:](#structure-and-example-of-a-tasks-yaml-file)
 - [Jinja2 Templates](#jinja2-templates)
@@ -19,12 +19,13 @@
 - [Using and Modifying the Example Workbook](#using-and-modifying-the-example-workbook)
   - [Base Data Worksheet](#base-data-worksheet)
   - [Management Interface Data Worksheet](#management-interface-data-worksheet)
+  - [Yaml-to-Excel](#yaml-to-excel)
   - [Integration with NITA:](#integration-with-nita)
 - [NITA Files and Their Purpose](#nita-files-and-their-purpose)
     - [Editing Files](#editing-files)
-    - [Customizing `project.yaml`](#customizing-projectyaml)
+    - [customising `project.yaml`](#customising-projectyaml)
       - [The `shell_command:` Statement](#the-shell_command-statement)
-      - [Step-by-Step Instructions for Customizing `project.yaml`](#step-by-step-instructions-for-customizing-projectyaml)
+      - [Step-by-Step Instructions for customising `project.yaml`](#step-by-step-instructions-for-customising-projectyaml)
       - [Complete Example of the Updated `project.yaml`](#complete-example-of-the-updated-projectyaml)
     - [Playbook Updates - `sites.yaml`](#playbook-updates---sitesyaml)
       - [Steps to Update `sites.yaml`](#steps-to-update-sitesyaml)
@@ -55,25 +56,18 @@ Below is a screenshot of the files and folders within one of the NITA project ex
 
 ### Examples, Examples, Examples
 
-To initiate the new project, let's start by using the existing [EBGP_WAN](https://github.com/Juniper/nita/tree/main/examples/ebgp_wan) example from the NITA repository, begin by cloning the NITA repository to the local machine you are using for the NITA server. 
+To initiate the new project, let's start by using the existing [EBGP_WAN](https://github.com/Juniper/nita/tree/main/examples/ebgp_wan) example from the NITA repository, begin by creating a project folder on your NITA server and copy the existing `ebgp_wan` project to the new project folder. 
 
-To clone the repository, open a terminal and run the following command:
-
-```bash
-git clone https://github.com/Juniper/nita.git
-```
-
-Once the repository is cloned, navigate into the `examples` directory and copy the `ebgp_wan` folder to your local NITA Project directory and rename it to the `new_project` name as desired. You can do this using the following command:
->!Replace `new_project' name with the desired name for the new project.
-
+Open a terminal and run the following commands:
+>!Replace `new_project' with the desired name for the new project.
 
 ```bash
-cd nita/examples/
+mkdir nita/examples/new_project
 
-cp -r ebgp_wan /path/to/new_project
+cp -r nita/examples/ebgp_wan/* nita/examples/new_project/
 ```
 
-With the `new_project folder` created and renamed, we are now positioned to start the process. The first item on the list is to modify the device inventory so that only the relevant hosts/host groups for the `new_project` are updated moving forward.
+With the `new_project` folder created and renamed, we are now positioned to start the process. The first item on the list is to modify the device inventory so that only the relevant hosts/host groups for the `new_project` are updated moving forward.
 
 ---- 
 
@@ -119,15 +113,15 @@ When naming your host groups, consider using a consistent naming scheme that ref
 
 ### Inventory File Location
 
-Once you have modified the inventory file with the new groups and host names for the `new_project` project, proceed to save this file in the root of the `examples/{new_project}` folder. We suggest giving it a unique name so you can easily recognize which host file corresponds to which environment later. A common practice is to append the environment name to the file name, such as `hosts_dc1` or `hosts_dc2`, to facilitate better management of your inventory files.
+Once you have modified the inventory file with the new groups and host names for the `new_project` project, proceed to save this file in the root of the `examples/{new_project}` folder. We suggest giving it a unique name so you can easily recognise which host file corresponds to which environment later. A common practice is to append the environment name to the file name, such as `hosts_dc1` or `hosts_dc2`, to facilitate better management of your inventory files.
 
-By keeping your device inventory organized and appropriately named, will keep the process of configuring and managing your network devices within the NITA framework much easier.
+By keeping your device inventory organised and appropriately named, will keep the process of configuring and managing your network devices within the NITA framework much easier.
 
 ---- 
 
 # Configuration Requirements
 
-Next, consider the configurations needed for each device type in the domains/zones and work towards standardizing them by using templates. Templates make building and troubleshooting easier because everything remains standardized and consistent — right?!
+Next, consider the configurations needed for each device type in the domains/zones and work towards standardising them by using templates. Templates make building and troubleshooting easier because everything remains standardised and consistent — right?!
 
 ### Static Route Configuration Example
 
@@ -147,7 +141,7 @@ static {
 
 ----
 
-# Automation Steps with NITA
+# Automating the Steps with NITA
 
 To streamline the automation process using NITA, we need to translate the above manual configurations into reusable templates.
 
@@ -288,9 +282,9 @@ However, to complete this process for NITA, we use workbooks and within that wor
 Here’s how to approach this, open the workbook and either add or edit a sheet called "`routing_options+`" and within this sheet, you will need to ensure the columns created represent the required Attribute/Value Pairs relevant to the `routing_options` defined within the example [Jinja2 Template](#jinja2-example) above - in this case it would have Attribute/Value Pairs such as:
    - `route.static`: The static route to be added.
    - `route.destination`: The destination network for the static route.
-   - Additional necessary attributes based on configuration requirements.
+   - Any additional attributes based on configuration requirements (Administrative Distance etc).
 
-   For instance, the contents of your "`routing_options+`" spreadsheet might look something like this:
+   For instance, the contents of the "`routing_options+`" spreadsheet might look something like this:
 
   ![static spreadsheet image](images/projects/static_route.png)
 
@@ -306,7 +300,7 @@ This distinction is particularly useful when you need to define multiple neighbo
 ----
 
 # Using and Modifying the Example Workbook
-We suggest to begin modifying the example workbook, start by adding `base` data information for the devices. This `base` data functions similarly to global variables, providing a standard configuration across various Jinja2 templates.
+We suggest to begin reviewing the example workbook, start by modifying `base` data information for the devices. This `base` data functions similarly to global variables, providing a standard configuration across various Jinja2 templates.
 
 ## Base Data Worksheet
 
@@ -335,7 +329,7 @@ The `base` worksheet must contain the following three columns: `host`, `name`, a
 
 Among the various attribute/value pairs you can define, the following are particularly important:
 
-- **`netconf_user`**: This value specifies the username that NITA will utilize to authenticate with network devices.
+- **`netconf_user`**: This value specifies the username that NITA will utilise to authenticate with network devices.
 
 - **`netconf_passwd`**: This represents the password associated with the user defined in `netconf_user`. It is critical for secure communication.
 
@@ -367,7 +361,7 @@ The layout of the "`Management Interface`" data worksheet should appear similar 
   - **Example**: `GigabitEthernet0/0`, `fxp0`
 
 - **IP Address (ip)**: 
-  - **Description**: The "`ip`" column is where you provide the IP address assigned to the management interface. This is the address that will be utilized for device management going forward.
+  - **Description**: The "`ip`" column is where you provide the IP address assigned to the management interface. This is the address that will be utilised for device management going forward.
   - **Purpose**: The IP address must be unique within the network and appropriately configured.
   - **Example**: `192.168.1.10`, `10.0.0.1`
 
@@ -376,9 +370,15 @@ The layout of the "`Management Interface`" data worksheet should appear similar 
   - **Purpose**: Proper configuration of the subnet mask is crucial for establishing correct routing and communication paths within the network. A misconfigured subnet mask can prevent the device from communicating with other devices on the same network.
   - **Example**: `255.255.255.0`, `255.255.255.128`
 
+## Yaml-to-Excel
+Another effective method you can adopt for managing your device configurations is to utilise the [NITA-yaml-to-excel](https://github.com/Juniper/nita-yaml-to-excel) tool. This approach begins with the creation of a the required YAML files, which are the structured variables for your devices. These YAML files are written to include all the necessary details such as device interfaces, routing-options and other relevant parameters for the devices you intend to deploy across the network.
+
+Once you have prepared and finalised the set of YAML files, the NITA-yaml-to-excel tool can be employed to streamline the process of converting this structured data into the Excel spreadsheet format used in NITA. This conversion is beneficial as it allows for easier data manipulation, analysis, and eventually uploading. The tool will take your YAML files as input and automatically generate the corresponding Excel sheet, ensuring that all the necessary information is accurately transferred.
+
+For detailed guidance on using this tool, including installation, configuration, and usage instructions, please refer to the accompanying documentation. 
 
 ## Integration with NITA: 
-Once the spreadsheet is populated, and uploaded to NITA, NITA will utilize the data you’ve entered in the workbook to generate the relevant YAML files. This eliminates the need for manual file creation and ensures consistency for device configurations. It is crucial to remember where you store the file so you can locate and upload this to NITA later!.  
+Once the spreadsheet is populated, and uploaded to NITA, NITA will utilise the data you’ve entered in the workbook to generate the relevant YAML files in the manner required for NITA. This eliminates the need for manual file creation and ensures consistency for device configurations. It is crucial to remember where you store the file so you can locate and upload this to NITA later!.  
 
 ---- 
 
@@ -390,8 +390,8 @@ Below is a breakdown of the files that you should be aware of and work with:
 
 | File | Purpose |
 |---|---|
-| `project.yaml` | This file serves as a cornerstone of the NITA framework, utilized as part of Jenkins jobs to orchestrate the network configuration process. It acts as the main playbook for building or testing the network infrastructure and includes configuration parameters for the entire project. |
-| `build/sites.yaml` | This file is crucial for directing the required `roles` in your project. It maps out which roles should be applied to specific hosts and which can be customized according to the needs of the project, allowing for flexibility of configurations. |
+| `project.yaml` | This file serves as a cornerstone of the NITA framework, utilised as part of Jenkins jobs to orchestrate the network configuration process. It acts as the main playbook for building or testing the network infrastructure and includes configuration parameters for the entire project. |
+| `build/sites.yaml` | This file is crucial for directing the required `roles` in your project. It maps out which roles should be applied to specific hosts and which can be customised according to the needs of the project, allowing for flexibility of configurations. |
 | `ansible.cfg` | This configuration file contains default values for Ansible parameters, defining settings that affect the behavior of how Ansible runs. Although this file typically remains unchanged, it can be modified if there are project-specific requirements that necessitate adjustments to Ansible's parameters. ie to modify SSH-related parameters, like control path or timeout.|
 | `build.sh` | This shell script executes the playbooks specified in the `build/sites.yaml` file against the specified groups, devices, or roles listed in your [hosts inventory](#host-inventory). It acts as the execution engine for the deployment process. |
 | `make_clean.yaml` | This playbook is designed to create or reset the build directories for each host. As implied by its name, it cleans up the file structure to allow for a fresh build process, ensuring that residual files do not interfere with new deployments. |
@@ -402,15 +402,15 @@ Below is a breakdown of the files that you should be aware of and work with:
 
 Generally, there is little need to modify most of the files mentioned above, with the exception of `project.yaml` and `build/sites.yaml`. 
 
-- **`project.yaml`**: This file can be customized for specific job categories within NITA. It's where you define parameters such as the Docker or Kubernetes image to be loaded when the Jenkins job is executed, allowing you to tailor the project environment to your needs.
+- **`project.yaml`**: This file can be customised for specific job categories within NITA. It's where you define parameters such as the Docker or Kubernetes image to be loaded when the Jenkins job is executed, allowing you to tailor the project environment to your needs.
 
 - **`build/sites.yaml`**: This file should be updated to reflect the new project requirements and the various roles you have generated. Configuring this file correctly ensures that the deployment process aligns with the Ansible roles associated with your devices.
 
-By utilizing these standard files and understanding their purposes, you can effectively manage your NITA projects and streamline the process of network automation.
+By utilising these standard files and understanding their purposes, you can effectively manage your NITA projects and streamline the process of network automation.
 
 ----
 
-### Customizing `project.yaml`
+### customising `project.yaml`
 This file will include essential fields like `name:` and `description:`, along with several `action` statements. Each action defines jobs and should include these basic statements:
 
 | Statement         | Description                                                                 |
@@ -430,9 +430,9 @@ If the magic happens in `project.yaml`, then it's the `shell_command:` statement
 | BUILD    | Writes the YAML files and runs a bash script (e.g., [`build.sh`](https://github.com/Juniper/nita/blob/main/examples/evpn_vxlan_erb_dc/build.sh)) in an Ansible Docker container to execute an Ansible playbook. |
 | TEST     | Writes the YAML files and runs a bash script (e.g., [`test.sh`](https://github.com/Juniper/nita/blob/main/examples/evpn_vxlan_erb_dc/test.sh)) in a Robot Docker container to execute specified tests. |
 
-In order to customize the `project.yaml` file for your NITA project, follow the instructions below, which relate to adapting the shell command in the relevant `build` section. This section is responsible for pulling the Docker or Kubernetes image from the public repository, downloading it to your local machine, and then executing it.
+In order to customise the `project.yaml` file for your NITA project, follow the instructions below, which relate to adapting the shell command in the relevant `build` section. This section is responsible for pulling the Docker or Kubernetes image from the public repository, downloading it to your local machine, and then executing it.
 
-#### Step-by-Step Instructions for Customizing `project.yaml`
+#### Step-by-Step Instructions for customising `project.yaml`
 
    **Locate the Example File**: Start by opening the example project (current use case) located at `examples/ebgp_wan/project.yaml`.
 
@@ -446,7 +446,7 @@ In order to customize the `project.yaml` file for your NITA project, follow the 
 
    **Modify the Image**:
    - If you need to modify the existing image, you can log into the container locally, make adjustments, and save the new version of the image locally. After making your changes, you must push the modified image to Docker Hub to make it publicly available.
-   - Ensure you tag your image appropriately. For example, if your organization is `acme`, and the new image is `ansible-dynamite` with a tag of `3.2.1.000`, you would need to tag and push it as follows:
+   - Ensure you tag your image appropriately. For example, if your organisation is `acme`, and the new image is `ansible-dynamite` with a tag of `3.2.1.000`, you would need to tag and push it as follows:
      ```shell
      docker tag `local-image-name` acme/ansible-dynamite:3.2.1.000
      docker push acme/ansible-dynamite:3.2.1.000
@@ -541,11 +541,13 @@ To ensure successful configuration management in the NITA project, it’s import
    ```
 
   **Modify Roles and Hosts**:
-   - The role `junos_common` is currently utilized for all hosts under the `switches` category. If the new environment does not use firewalls, you can comment out or remove these related sections.
+
+   - The role `junos_common` is currently utilised for all hosts under the `switches` category. If the new environment does not use firewalls, you can comment/remove these related sections.
    - **To comment out sections**: Add `#` at the beginning of the line. This tells Ansible to ignore those lines during execution. 
    - **To remove a role**: Simply delete the corresponding entry from the `roles:` list.
 
    #### Example of Updated `sites.yaml`
+
    After modifications for a static route setup, the `sites.yaml` might look like this (_note the new section at the bottom of the file_):
 
    ```yaml
@@ -628,7 +630,7 @@ The contents of the zip file will obviously vary depending upon what you want th
 
 To create a zip file for your project, follow these steps:
 
-1. **Organize Your Files**: Make sure your project directory includes all required files:
+1. **Organise Your Files**: Make sure your project directory includes all required files:
    - `project.yaml`
    - Any other playbooks, scripts, and templates referenced in the  `project.yaml`.
 
@@ -683,4 +685,3 @@ This document is relevant for NITA version 22.8.
 
 # SEE ALSO
 [nita-cmd](https://github.com/Juniper/nita/blob/main/docs/nita-cmd.md)
-
