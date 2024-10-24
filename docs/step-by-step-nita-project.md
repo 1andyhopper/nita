@@ -1,5 +1,7 @@
+# Creating Your Own Project Files for NITA
 
-- [What you need to know to create your own projects in NITA](#what-you-need-to-know-to-create-your-own-projects-in-nita)
+## Contents
+- [Overview](#overview)
 - [Files and Folders](#files-and-folders)
     - [Examples, Examples, Examples](#examples-examples-examples)
 - [Device Requirements](#device-requirements)
@@ -41,7 +43,8 @@
 - [VERSION](#version)
 - [SEE ALSO](#see-also)
 
-# What you need to know to create your own projects in NITA
+## Overview
+
 NITA ships with two example projects that we use to demonstrate its ability to automate the build and test processes for both a simple [DC WAN topology based on IPCLOS and eBGP](https://github.com/Juniper/nita/tree/main/examples/ebgp_wan) and an [EVPN VXLAN data centre using Juniper QFX devices](https://github.com/Juniper/nita/tree/main/examples/evpn_vxlan_erb_dc). However, what if we wanted to configure NITA to do build a new environment? This document explains how to start building a new project.
 
 >! All the instructions below are based on using Ubuntu 20.04 as the local host for the NITA tool.
@@ -157,7 +160,7 @@ Next, we use an Excel workbook to store the inventory/variable data for the temp
 
 ### Implementing the Roles Structure
 
-To be able to use the aforementioned Jinja2 snippets and the workbook containing the data variables we need to have the correct directory structure in place so that NITA is able to locate the files and build the configuration required for each role, to do this we have to build the directory structure, proceed to navigate to the existing `new_project` directory, then within this directory, create a new subdirectory called `roles`. 
+To be able to use the aforementioned Jinja2 snippets and the workbook containing the data variables we need to have the correct directory structure in place so that NITA is able to locate the files and build the configuration required for each role. To do this we have to build the directory structure, proceed to navigate to the existing `new_project` directory, then within this directory, create a new subdirectory called `roles`. 
 
 The structure should look something similar to the below screenshot (_paying attention to the lower half of the image shown_).  Now within the newly created `roles` directory, create subdirectories for each different role as required, each role should typically have its own folders (_shown here as "mx_common"_) that include:
 
@@ -250,7 +253,7 @@ endif %}
 ### Jinja2 file locations
 
 After generating the new Jinja2 templates, it is crucial to store these templates in locations that NITA can access. The organisation of these templates and roles in NITA play a significant part in the automation tasks and how each device role is configured.
-To utilise the Jinja2 templates created for the `new_project`, we use the standard directory structure used by Ansible, specifically the `roles/templates` directory.  
+To utilise the Jinja2 templates created for the `new_project`, we use the standard directory structure used by Ansible, specifically the `roles/<role>/templates` directory.  
 
 Now we have completed the Jinja2 (J2) document and looked at the structure all we have left is to actually generate the variable data using the Excel workbook and corresponding spreadsheets within.
 
@@ -311,7 +314,7 @@ The `base` worksheet must contain the following three columns: `host`, `name`, a
 **Column Definitions**
 
 - **Host**: 
-  - **Description**: This column indicates the name of the YAML file where the information will be stored.
+  - **Description**: This column indicates the name of the YAML file where the information will be stored. When a workbook is read, NITA's parser splits the value in this cell at the ``/`` character - the only valid values to the left of that character are either ``host_vars`` and ``group_vars``.
   - **Purpose**: By specifying the host name, you ensure that the correct configuration data is written to the appropriate YAML file.
   - **Example**: `router1.yml`, `switchA.yml`
 
@@ -448,7 +451,7 @@ In order to customise the `project.yaml` file for your NITA project, follow the 
    - If you need to modify the existing image, you can log into the container locally, make adjustments, and save the new version of the image locally. After making your changes, you must push the modified image to Docker Hub to make it publicly available.
    - Ensure you tag your image appropriately. For example, if your organisation is `acme`, and the new image is `ansible-dynamite` with a tag of `3.2.1.000`, you would need to tag and push it as follows:
      ```shell
-     docker tag `local-image-name` acme/ansible-dynamite:3.2.1.000
+     docker tag <local-image-name> acme/ansible-dynamite:3.2.1.000
      docker push acme/ansible-dynamite:3.2.1.000
      ```
 
@@ -660,7 +663,7 @@ For a detailed reference on how all of this comes together, take a good look at 
 
 ## Automating Tests
 
-We've looked at how NITA can be used to automate the deployment of device configurations, next lets look at how we can add automated tests to verify that the deployments worked. NITA uses Robot Framework to execute tests which can use libraries such as `pybot` or our modified version `pybot_jrouter` and this gives a huge amount of flexibility for creating automated tests.
+This document has looked at how NITA can be used to automate the deployment of device configurations, next lets look at how we can add automated tests to verify that the deployments worked. NITA uses Robot Framework to execute tests which can use libraries such as `pybot` or our modified version `pybot_jrouter` and this gives a huge amount of flexibility for creating automated tests.
 
 ---- 
 
@@ -679,7 +682,7 @@ The following third party sites provide some useful tools which you may find hel
 
 # VERSION
 
-This document is relevant for NITA version 22.8.
+This document is relevant for NITA version 23.12.
 
 ---- 
 
